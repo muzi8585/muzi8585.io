@@ -11,6 +11,7 @@ import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/Screens/FeedBackScreen.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/Screens/Reports.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/Screens/kanban_screen.dart';
+import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/tampoAdminUI.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/Widgets/WidgetConatiner.dart';
 import 'package:flutter_web_admin_panels/Utils/build_context_extension.dart';
 import 'package:flutter_web_admin_panels/Utils/color_data.dart';
@@ -58,7 +59,7 @@ class _RoutingAdminPanelState extends ConsumerState<RoutingAdminPanel> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => RoutingAdminPanel(
+          builder: (_) => TampoAdminUI(
             appA: widget.appB ?? Firebase.app(),
             appB: widget.appB ?? Firebase.app(),
           ),

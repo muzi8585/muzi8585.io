@@ -13,6 +13,7 @@ import 'package:flutter_web_admin_panels/Screens/Background_Location_Admin_Panel
 import 'package:flutter_web_admin_panels/Screens/Background_Location_Admin_Panel/Presentation/Widget/WrapperComponent2.dart';
 import 'package:flutter_web_admin_panels/Screens/Routing_Flow_Admin_Panel/Presentation/View/Routing_Admin_Panel.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Data/Controller.dart';
+import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/tampoAdminUI.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/Widgets/WidgetConatiner.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/Screens/Commons.dart';
@@ -74,7 +75,7 @@ class _BackgroundLocationAdminPanelState
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => RoutingAdminPanel(
+          builder: (_) => TampoAdminUI(
             appA: widget.appB ?? Firebase.app(),
             appB: widget.appB ?? Firebase.app(),
           ),

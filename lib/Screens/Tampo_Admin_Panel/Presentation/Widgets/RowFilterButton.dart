@@ -5,96 +5,68 @@ import 'package:google_fonts/google_fonts.dart';
 final selectedLevelProvider = StateProvider<String>((ref) => 'All Level');
 
 class RowWidgetButtons extends ConsumerWidget {
-  var selectedLevel;
-  RowWidgetButtons({super.key, required this.selectedLevel});
+  final String selectedLevel;
+  const RowWidgetButtons({super.key, required this.selectedLevel});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final levels = {
+      'All Level': 'All Level',
+      'Amazing': 'FeedbackType.amazing',
+      'Good': 'FeedbackType.good',
+      'Okay': 'FeedbackType.okay',
+      'Bad': 'FeedbackType.bad',
+      'Terrible': 'FeedbackType.terrible',
+    };
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-      child: Row(
-        children: [
-          FilterButton(
-            text: 'All Level',
-            onTap: () =>
-                ref.read(selectedLevelProvider.state).state = 'All Level',
-            selected: selectedLevel == 'All Level',
-          ),
-          FilterButton(
-            text: 'Amazing',
-            onTap: () => ref.read(selectedLevelProvider.state).state =
-                'FeedbackType.amazing',
-            selected: selectedLevel == 'FeedbackType.amazing',
-          ),
-          FilterButton(
-            text: 'Good',
-            onTap: () => ref.read(selectedLevelProvider.state).state =
-                'FeedbackType.good',
-            selected: selectedLevel == 'FeedbackType.good',
-          ),
-          FilterButton(
-            text: 'Okay',
-            onTap: () => ref.read(selectedLevelProvider.state).state =
-                'FeedbackType.okay',
-            selected: selectedLevel == 'FeedbackType.okay',
-          ),
-          FilterButton(
-            text: 'Bad',
-            onTap: () => ref.read(selectedLevelProvider.state).state =
-                'FeedbackType.bad',
-            selected: selectedLevel == 'FeedbackType.bad',
-          ),
-          FilterButton(
-            text: 'Terrible',
-            onTap: () => ref.read(selectedLevelProvider.state).state =
-                'FeedbackType.terrible',
-            selected: selectedLevel == 'FeedbackType.terrible',
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class FilterButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onTap;
-  final bool selected;
-
-  const FilterButton({
-    required this.text,
-    required this.onTap,
-    this.selected = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 3),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(30),
-        onTap: onTap,
-        child: Container(
-          padding: const EdgeInsets.only(right: 8, left: 8, top: 5, bottom: 5),
-          decoration: BoxDecoration(
-            color: selected ? Colors.teal.withOpacity(0.1) : Colors.white,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(
-              color: selected ? Colors.teal : Colors.black12,
-            ),
-          ),
-          child: Text(
-            text,
-            maxLines: 1,
-            style: GoogleFonts.poppins(
-              textStyle: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
-                color: selected ? Colors.teal : Colors.black38,
+      padding: const EdgeInsets.only(top: 10, right: 10),
+      child: Wrap(
+        spacing: 16,
+        runSpacing: 12,
+        alignment: WrapAlignment.start,
+        children: levels.entries.map((entry) {
+          final isSelected = selectedLevel == entry.value;
+          return MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () =>
+                  ref.read(selectedLevelProvider.notifier).state = entry.value,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: isSelected ? Colors.teal : Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: isSelected
+                        ? Colors.teal.shade700
+                        : Colors.grey.shade300,
+                    width: 1.5,
+                  ),
+                  boxShadow: isSelected
+                      ? [
+                          BoxShadow(
+                            color: Colors.teal.withOpacity(0.1),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Text(
+                  entry.key,
+                  style: GoogleFonts.poppins(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected ? Colors.white : Colors.grey,
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }).toList(),
       ),
     );
   }

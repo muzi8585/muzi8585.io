@@ -33,31 +33,32 @@ class FeedbackWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       decoration: BoxDecoration(
+        
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
           border: Border.all(color: Colors.grey[100]!)),
-      child: Center(
-          child: Row(
-        children: [
-          Icon(
-            feedbackIcon,
-            size: 12,
-            color: Colors.grey[500],
-          ),
-          const SizedBox(
-            width: 5,
-          ),
-          Text(
-            feedbackLevel.split('.').length > 1
-                ? feedbackLevel.split('.')[1].trim().toUpperCase()
-                : '',
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.black45,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+              children: [
+      Icon(
+        feedbackIcon,
+        size: 12,
+        color: Colors.grey[500],
+      ),
+      const SizedBox(
+        width: 5,
+      ),
+      Text(
+        feedbackLevel.split('.').length > 1
+            ? feedbackLevel.split('.')[1].trim().toUpperCase()
+            : '',
+        style: TextStyle(
+          fontSize: 10,
+          color: Colors.black45,
+        ),
+      )
+              ],
             ),
-          )
-        ],
-      )),
     );
   }
 }

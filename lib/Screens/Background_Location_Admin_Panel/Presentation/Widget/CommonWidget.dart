@@ -31,7 +31,8 @@ class _CommonwidgetState extends ConsumerState<Commonwidget> {
               ),
             ),
             SizedBox(
-                height: MediaQuery.of(context).size.height * 0.055,
+                height: 40,
+                width: 250,
                 child: TextField(
                   keyboardType: TextInputType.text,
                   controller: controller,
