@@ -118,7 +118,7 @@ class _RoutingAdminPanelState extends ConsumerState<RoutingAdminPanel> {
                                     width: 8,
                                   ),
                                   const Text(
-                                    "Routing Flow Admin",
+                                    "Tampo Admin",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
@@ -173,22 +173,23 @@ class _RoutingAdminPanelState extends ConsumerState<RoutingAdminPanel> {
                                         });
                                       },
                                     ),
-                                    buildMenuTile(
-                                      icon: LucideIcons.arrowUpFromLine,
-                                      label: 'Commons',
-                                      onTap: () {
-                                       
-                                        setState(() {
-                                          selectedMenu == "Commons";
-                                        });
-                                      },
-                                    ),
+                                   
                                     buildMenuTile(
                                       icon: LucideIcons.bug,
                                       label: 'Reports',
                                       onTap: () {
                                          setState(() {
                                           selectedMenu == "Reports";
+                                        });
+                                      },
+                                    ),
+                                     buildMenuTile(
+                                      icon: LucideIcons.arrowUpFromLine,
+                                      label: 'Commons',
+                                      onTap: () {
+                                       
+                                        setState(() {
+                                          selectedMenu == "Commons";
                                         });
                                       },
                                     ),
@@ -314,6 +315,7 @@ class _RoutingAdminPanelState extends ConsumerState<RoutingAdminPanel> {
               ),
             ].reversed.toList(),
           ),
+            if (selectedMenu == "Users") const KanbanScreen(),
           if(selectedMenu == "Dashboard") const Dashboardwidget(),
           if(selectedMenu == "Feedbacks") const FeedbackScreen(),
            if(selectedMenu == "Commons")  AppVersion(),

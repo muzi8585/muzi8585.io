@@ -61,11 +61,11 @@ class _BackgroundLocationAdminPanelState
   void navigate(String panel) {
     setState(() => selected = panel);
 
-    if (panel == 'Background Location') {
+    if (panel == 'Routing Flow Admin') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => BackgroundLocationAdminPanel(
+          builder: (_) => RoutingAdminPanel(
             appA: widget.appB ?? Firebase.app(),
             appB: widget.appA ?? Firebase.app(),
           ),
@@ -134,7 +134,7 @@ class _BackgroundLocationAdminPanelState
                                     width: 8,
                                   ),
                                   const Text(
-                                    "Location Admin",
+                                    "Tampo Admin",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 22,
@@ -170,25 +170,7 @@ class _BackgroundLocationAdminPanelState
                                         });
                                       },
                                     ),
-                                    buildMenuTile(
-                                      icon: LucideIcons.locate,
-                                      label: 'Locations',
-                                      onTap: () {
-                                        setState(() {
-                                          selectedMenu == "Locations";
-                                        });
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (_) =>
-                                        //         BackgroundLocationAdminScreen(
-                                        //       app:
-                                        //           widget.appB ?? Firebase.app(),
-                                        //     ),
-                                        //   ),
-                                        // );
-                                      },
-                                    ),
+                                 
                                     buildMenuTile(
                                       icon: LucideIcons.users,
                                       label: 'Users',
@@ -207,26 +189,22 @@ class _BackgroundLocationAdminPanelState
                                         });
                                       },
                                     ),
-                                    buildMenuTile(
-                                      icon: LucideIcons.arrowUpFromLine,
-                                      label: 'Commons',
-                                      onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (_) => AppVersion()),
-                                        // );
-                                        setState(() {
-                                          selectedMenu == "Commons";
-                                        });
-                                      },
-                                    ),
+                                   
                                     buildMenuTile(
                                       icon: LucideIcons.bug,
                                       label: 'Reports',
                                       onTap: () {
                                          setState(() {
                                           selectedMenu == "Reports";
+                                        });
+                                      },
+                                    ), buildMenuTile(
+                                      icon: LucideIcons.arrowUpFromLine,
+                                      label: 'Commons',
+                                      onTap: () {
+                                       
+                                        setState(() {
+                                          selectedMenu == "Commons";
                                         });
                                       },
                                     ),
@@ -353,9 +331,10 @@ class _BackgroundLocationAdminPanelState
             ].reversed.toList(),
           ),
           if (selectedMenu == "Dashboard") const Dashboardwidget(),
-          if (selectedMenu == "Locations") const Locationwidget(),
-          if (selectedMenu == "Commons") const Commonwidget(),
+       
+          if (selectedMenu == "Commons")  AppVersion(),
           if (selectedMenu == "Feedbacks") const FeedbackScreen(),
+            if (selectedMenu == "Users") const KanbanScreen(),
           if (selectedMenu == "Reports") const ReportsScreen(),
          
         ],

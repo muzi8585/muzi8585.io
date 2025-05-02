@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_admin_panels/Screens/Background_Location_Admin_Panel/Presentation/Widget/CommonWidget.dart';
+import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/Widgets/versionInputFeild.dart';
 
 class AppVersion extends ConsumerStatefulWidget {
   @override
@@ -10,32 +12,41 @@ class AppVersion extends ConsumerStatefulWidget {
 
 class _AppVersionState extends ConsumerState<AppVersion> {
   final TextEditingController controller = TextEditingController();
+  final TextEditingController controlleriOS = TextEditingController();
+  Commonwidget commonwidget = Commonwidget();
   String? currentVersion;
+  String? currentVersioniOS;
+
   bool showUpdateButton = false;
+  bool showUpdateButtoniOS = false;
 
   @override
   void initState() {
     super.initState();
-    _loadVersion();
+    _loadVersions();
   }
 
-  Future<void> _loadVersion() async {
+  Future<void> _loadVersions() async {
     try {
       final doc = await FirebaseFirestore.instance
-          .collection('appcommons')
-          .doc('appcommons')
+          .collection('AppCommons')
+          .doc('appCommons')
           .get();
       if (doc.exists) {
-        final version = doc.data()?['version'] ?? '';
+        final data = doc.data()!;
         setState(() {
-          currentVersion = version;
-          controller.text = version;
+          currentVersion = data['minSupportedVersion'] ?? '';
+          currentVersioniOS = data['minSupportedVersionIos'] ?? '';
+          controller.text = currentVersion!;
+          controlleriOS.text = currentVersioniOS!;
         });
       }
     } catch (e) {
       setState(() {
         currentVersion = 'Error';
+        currentVersioniOS = 'Error';
         controller.text = 'Error';
+        controlleriOS.text = 'Error';
       });
     }
   }
@@ -44,19 +55,40 @@ class _AppVersionState extends ConsumerState<AppVersion> {
     final version = controller.text.trim();
     try {
       await FirebaseFirestore.instance
-          .collection('appcommons')
-          .doc('appcommons')
-          .set({'version': version});
+          .collection('AppCommons')
+          .doc('appCommons')
+          .update({'minSupportedVersion': version});
       setState(() {
         currentVersion = version;
         showUpdateButton = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Version updated')),
+        SnackBar(content: Text('Android version updated')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating version')),
+        SnackBar(content: Text('Error updating Android version')),
+      );
+    }
+  }
+
+  Future<void> updateVersioniOS() async {
+    final versioniOS = controlleriOS.text.trim();
+    try {
+      await FirebaseFirestore.instance
+          .collection('AppCommons')
+          .doc('appCommons')
+          .update({'minSupportedVersionIos': versioniOS});
+      setState(() {
+        currentVersioniOS = versioniOS;
+        showUpdateButtoniOS = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('iOS version updated')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating iOS version')),
       );
     }
   }
@@ -64,80 +96,92 @@ class _AppVersionState extends ConsumerState<AppVersion> {
   @override
   void dispose() {
     controller.dispose();
+    controlleriOS.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'App Version',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            padding:const  EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.1),
             ),
-            const SizedBox(height: 12),
-            SizedBox(
-              height: 40,
-              width: 250,
-              child: TextField(
-                controller: controller,
-                cursorColor: Colors.black,
-                keyboardType: TextInputType.text,
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'[0-9.-]')),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    showUpdateButton = value.trim() != currentVersion;
-                  });
-                },
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                  filled: true,
-                  fillColor: const Color.fromRGBO(240, 240, 240, 0.7),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  suffixIcon: showUpdateButton
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 8),
-                          child: GestureDetector(
-                            onTap: updateVersion,
-                            child: Container(
-                              height: 40,
-                              width: 60,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              decoration: BoxDecoration(
-                                color: Colors.teal,
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: const Center(
-                                child: Text(
-                                  'Update',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : null,
-                ),
+            child: const Text(
+              '   Commons',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
               ),
             ),
-          ],
-        ),
+          ),
+        
+          Divider(
+            color: Colors.grey.withOpacity(0.2),
+            height: 1,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Min Support Version(Android)',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 12),
+                    VersionInputField(
+                      controller: controller,
+                      onChanged: (value) {
+                        setState(() {
+                          showUpdateButton = value.trim() != currentVersion;
+                        });
+                      },
+                      showUpdateButton: showUpdateButton,
+                      onUpdateTap: updateVersion,
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Min Support Version(iOS)',
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                    ),
+                    const SizedBox(height: 12),
+                    VersionInputField(
+                      controller: controlleriOS,
+                      onChanged: (value) {
+                        setState(() {
+                          showUpdateButtoniOS =
+                              value.trim() != currentVersioniOS;
+                        });
+                      },
+                      showUpdateButton: showUpdateButtoniOS,
+                      onUpdateTap: updateVersioniOS,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

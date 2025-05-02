@@ -54,8 +54,30 @@ class _KanbanScreenState extends ConsumerState<KanbanScreen> {
     return Expanded(
       child: Column(
         children: [
+           Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
+                  decoration: BoxDecoration(
+                   
+                    color: Colors.grey.withOpacity(0.1),
+                 
+                  ),
+                  child: Text(
+                    '   Users',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ),
+              
+                Divider(
+                  color: Colors.grey.withOpacity(0.2),
+                  height: 1,
+                ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Container(
               height: 50,
               width: double.infinity,
@@ -137,194 +159,188 @@ class _KanbanScreenState extends ConsumerState<KanbanScreen> {
                 final paginatedUsers =
                     filteredUsers.sublist(startIndex, endIndex);
 
-                return Column(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Table(
-                            border: const TableBorder(
-                              horizontalInside: BorderSide.none,
-                              verticalInside: BorderSide.none,
-                            ),
-                            columnWidths: const {
-                              0: FixedColumnWidth(430),
-                              1: FixedColumnWidth(540),
-                              2: FixedColumnWidth(330),
-                            },
-                            children: [
-                              TableRow(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(8),
-                                    topRight: Radius.circular(8),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Table(
+                          border: const TableBorder(
+                            horizontalInside: BorderSide.none,
+                            verticalInside: BorderSide.none,
+                          ),
+                          columnWidths: const {
+                            0: FixedColumnWidth(380),
+                            1: FixedColumnWidth(480),
+                            2: FixedColumnWidth(280),
+                          },
+                          children: [
+                            TableRow(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  topRight: Radius.circular(8),
+                                ),
+                                color: Color(0xFF2A3D56),
+                              ),
+                              children: [
+                                TableCell(
+                                  child: InkWell(
+                                    onTap: () => _sortUsers('name'),
+                                    child: const Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 8, bottom: 8, left: 12),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            LucideIcons.arrowDownUp,
+                                            size: 14,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            'Name',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  color: Color(0xFF2A3D56),
+                                ),
+                                TableCell(
+                                  child: InkWell(
+                                    onTap: () => _sortUsers('email'),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            LucideIcons.arrowDownUp,
+                                            size: 14,
+                                            color: Colors.white,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            'Email',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const TableCell(
+                                  child: Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Create At',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            ...paginatedUsers
+                                .asMap()
+                                .entries
+                                .map<TableRow>((entry) {
+                              final index = entry.key;
+                              final user = entry.value;
+
+                              final isEvenRow = index % 2 != 0;
+
+                              return TableRow(
+                                decoration: BoxDecoration(
+                                  color: isEvenRow
+                                      ? const Color(0x001e3a5f)
+                                          .withOpacity(0.09)
+                                      : Colors.transparent,
                                 ),
                                 children: [
-                                  TableCell(
-                                    child: InkWell(
-                                      onTap: () => _sortUsers('name'),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 8, bottom: 8, left: 12),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              LucideIcons.arrowDownUp,
-                                              size: 14,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              'Name',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 12,
+                                        right: 12,
+                                        top: 12,
+                                        bottom: 12),
+                                    child: Text(
+                                      user.name,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color(0xFF2A3D56)
+                                            .withOpacity(0.75),
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
-                                  TableCell(
-                                    child: InkWell(
-                                      onTap: () => _sortUsers('email'),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              LucideIcons.arrowDownUp,
-                                              size: 14,
-                                              color: Colors.white,
-                                            ),
-                                            SizedBox(width: 5),
-                                            Text(
-                                              'Email',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 12,
+                                        right: 12,
+                                        top: 12,
+                                        bottom: 12),
+                                    child: Text(
+                                      user.email,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color(0xFF2A3D56)
+                                            .withOpacity(0.75),
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
-                                  const TableCell(
-                                    child: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Create At',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 5, right: 5, top: 10, bottom: 10),
+                                    child: Text(
+                                      formatDate(getRandomDate()),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: const Color(0xFF2A3D56)
+                                            .withOpacity(0.75),
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                   ),
                                 ],
-                              ),
-                              ...paginatedUsers
-                                  .asMap()
-                                  .entries
-                                  .map<TableRow>((entry) {
-                                final index = entry.key;
-                                final user = entry.value;
-
-                                final isEvenRow = index % 2 != 0;
-
-                                return TableRow(
-                                  decoration: BoxDecoration(
-                                    color: isEvenRow
-                                        ? const Color(0x001e3a5f)
-                                            .withOpacity(0.09)
-                                        : Colors.transparent,
-                                  ),
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 12,
-                                          right: 12,
-                                          top: 12,
-                                          bottom: 12),
-                                      child: Text(
-                                        user.name,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: const Color(0xFF2A3D56)
-                                              .withOpacity(0.75),
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 12,
-                                          right: 12,
-                                          top: 12,
-                                          bottom: 12),
-                                      child: Text(
-                                        user.email,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: const Color(0xFF2A3D56)
-                                              .withOpacity(0.75),
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 5,
-                                          right: 5,
-                                          top: 10,
-                                          bottom: 10),
-                                      child: Text(
-                                        formatDate(getRandomDate()),
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: const Color(0xFF2A3D56)
-                                              .withOpacity(0.75),
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              }),
-                            ],
-                          ),
+                              );
+                            }),
+                          ],
                         ),
                       ),
-                    ),
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: PaginationWidget(
-                        currentPage: _currentPage,
-                        totalPages: totalPages,
-                        onPreviousPage: () {
-                          setState(() {
-                            _currentPage--;
-                          });
-                        },
-                        onNextPage: () {
-                          setState(() {
-                            _currentPage++;
-                          });
-                        },
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: PaginationWidget(
+                          currentPage: _currentPage,
+                          totalPages: totalPages,
+                          onPreviousPage: () {
+                            setState(() {
+                              _currentPage--;
+                            });
+                          },
+                          onNextPage: () {
+                            setState(() {
+                              _currentPage++;
+                            });
+                          },
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               },
               loading: () => const ShimmerUser(),

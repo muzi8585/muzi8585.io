@@ -31,7 +31,7 @@ class _TampoAdminUIState extends ConsumerState<TampoAdminUI> {
   late FirebaseApp activeApp;
   bool isLoading = false;
   bool showMenu = false;
-    String selectedMenu = 'Dashboard';
+  String selectedMenu = 'Dashboard';
   bool showProfile = false;
   bool showMessage = false;
   bool showNotification = false;
@@ -114,7 +114,7 @@ class _TampoAdminUIState extends ConsumerState<TampoAdminUI> {
     double width1 = context.width();
     double height = context.height();
     bool isDesktop = context.isDesktop();
-    
+
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -184,18 +184,17 @@ class _TampoAdminUIState extends ConsumerState<TampoAdminUI> {
                                       icon: LucideIcons.layoutGrid,
                                       label: 'Dashboard',
                                       onTap: () {
-                                         setState(() {
+                                        setState(() {
                                           selectedMenu == "Dashboard";
                                         });
                                       },
                                     ),
-                                   
                                     buildMenuTile(
                                       icon: LucideIcons.users,
                                       label: 'Users',
                                       onTap: () {
-                                         setState(() {
-                                          selectedMenu == "Users";
+                                        setState(() {
+                                          selectedMenu = "Users";
                                         });
                                       },
                                     ),
@@ -203,31 +202,27 @@ class _TampoAdminUIState extends ConsumerState<TampoAdminUI> {
                                       icon: LucideIcons.messageSquare,
                                       label: 'Feedbacks',
                                       onTap: () {
-                                       setState(() {
+                                        setState(() {
                                           selectedMenu == "Feedbacks";
                                         });
                                       },
                                     ),
-                                    buildMenuTile(
-                                      icon: LucideIcons.arrowUpFromLine,
-                                      label: 'Commons',
-                                      onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //       builder: (_) => AppVersion()),
-                                        // );
-                                        setState(() {
-                                          selectedMenu == "Commons";
-                                        });
-                                      },
-                                    ),
+                                   
                                     buildMenuTile(
                                       icon: LucideIcons.bug,
                                       label: 'Reports',
                                       onTap: () {
                                         setState(() {
                                           selectedMenu == "Reports";
+                                        });
+                                      },
+                                    ),
+                                     buildMenuTile(
+                                      icon: LucideIcons.arrowUpFromLine,
+                                      label: 'Commons',
+                                      onTap: () {
+                                        setState(() {
+                                          selectedMenu == "Commons";
                                         });
                                       },
                                     ),
@@ -353,10 +348,11 @@ class _TampoAdminUIState extends ConsumerState<TampoAdminUI> {
               ),
             ].reversed.toList(),
           ),
-         if(selectedMenu == "Dashboard") const Dashboardwidget(),
-          if(selectedMenu == "Feedbacks") const FeedbackScreen(),
-           if(selectedMenu == "Commons")  AppVersion(),
-            if(selectedMenu == "Reports") const ReportsScreen(),
+          if (selectedMenu == "Dashboard") const Dashboardwidget(),
+          if (selectedMenu == "Feedbacks") const FeedbackScreen(),
+          if (selectedMenu == "Commons") AppVersion(),
+          if (selectedMenu == "Users") const KanbanScreen(),
+          if (selectedMenu == "Reports") const ReportsScreen(),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 
 import 'package:firebase_core/firebase_core.dart';
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_admin_panels/Screens/Tampo_Admin_Panel/Presentation/View/tampoAdminUI.dart';
@@ -40,9 +41,10 @@ const firebaseOptionC = FirebaseOptions(
 );
 
 void main() async {
+   html.document.title = 'Tampo Admin';
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize Firebase for all 3 apps
+ 
+ 
   final appA =
       await Firebase.initializeApp(options:FirebaseOptions(
   apiKey: "AIzaSyDkButqRfTtXCfWbuPy5QG45_ysJy7rjuc",
@@ -77,7 +79,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Admin Panel',
+      title: 'Tampo Admin',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

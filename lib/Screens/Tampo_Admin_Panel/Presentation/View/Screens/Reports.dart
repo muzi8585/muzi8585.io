@@ -32,21 +32,53 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               return const Center(child: Text('No reports available.'));
             }
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              child: GridView.builder(
-                itemCount: reports.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  childAspectRatio: 1.8,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.1),
+                  ),
+                  child: Text(
+                    '   Reports',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
-                itemBuilder: (context, index) {
-                  final report = reports[index];
-                  return _ReportCard(report: report);
-                },
-              ),
+               
+                Divider(
+                  color: Colors.grey.withOpacity(0.2),
+                  height: 1,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 10),
+                    child: GridView.builder(
+                      itemCount: reports.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 20,
+                        crossAxisSpacing: 20,
+                        childAspectRatio: 1.8,
+                      ),
+                      itemBuilder: (context, index) {
+                        final report = reports[index];
+                        return _ReportCard(report: report);
+                      },
+                    ),
+                  ),
+                ),
+              ],
             );
           },
           loading: () => const ReportShimmer(),

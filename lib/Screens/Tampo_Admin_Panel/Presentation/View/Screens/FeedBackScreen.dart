@@ -28,51 +28,74 @@ class FeedbackScreen extends ConsumerWidget {
         onRefresh: () async {
           await ref.refresh(fetchFeedbackProvider);
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RowWidgetButtons(selectedLevel: selectedLevel),
-              const SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Total Feedback: ${feedbackFuture.when(
-                      data: (list) => selectedLevel == 'All Level'
-                          ? list.length
-                          : list.where((f) => f.level == selectedLevel).length,
-                      loading: () => 0,
-                      error: (_, __) => 0,
-                    )}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 14),
-                  ),
-                ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 8),
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.1),
               ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: feedbackFuture.when(
-                  skipLoadingOnRefresh: false,
-                  data: (feedbacks) {
-                    feedbacks
-                        .sort((a, b) => b.createdAt.compareTo(a.createdAt));
+              child: Text(
+                '   FeedBack',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+           
+            Divider(
+              color: Colors.grey.withOpacity(0.2),
+              height: 1,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: RowWidgetButtons(selectedLevel: selectedLevel),
+            ),
+            const SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Text(
+                '${feedbackFuture.when(
+                  data: (list) => selectedLevel == 'All Level'
+                      ? list.length
+                      : list.where((f) => f.level == selectedLevel).length,
+                  loading: () => 0,
+                  error: (_, __) => 0,
+                )} Feedback',
+                style:
+                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: feedbackFuture.when(
+                skipLoadingOnRefresh: false,
+                data: (feedbacks) {
+                  feedbacks.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-                    final filtered = selectedLevel == 'All Level'
-                        ? feedbacks
-                        : feedbacks
-                            .where((f) => f.level == selectedLevel)
-                            .toList();
+                  final filtered = selectedLevel == 'All Level'
+                      ? feedbacks
+                      : feedbacks
+                          .where((f) => f.level == selectedLevel)
+                          .toList();
 
-                    if (filtered.isEmpty) {
-                      return const Center(
-                          child: Text('No feedback available.'));
-                    }
+                  if (filtered.isEmpty) {
+                    return const Center(child: Text('No feedback available.'));
+                  }
 
-                    return usersFuture.when(
-                      data: (users) {
-                        return GridView.builder(
+                  return usersFuture.when(
+                    data: (users) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        child: GridView.builder(
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
@@ -95,20 +118,20 @@ class FeedbackScreen extends ConsumerWidget {
                               date: feedback.createdAt,
                             );
                           },
-                        );
-                      },
-                      loading: () => const Projectshimmer(),
-                      error: (err, _) =>
-                          Center(child: Text('Error loading users: $err')),
-                    );
-                  },
-                  loading: () => const Feedbackshimmer(),
-                  error: (err, _) =>
-                      Center(child: Text('Error loading feedbacks: $err')),
-                ),
+                        ),
+                      );
+                    },
+                    loading: () => const Projectshimmer(),
+                    error: (err, _) =>
+                        Center(child: Text('Error loading users: $err')),
+                  );
+                },
+                loading: () => const Feedbackshimmer(),
+                error: (err, _) =>
+                    Center(child: Text('Error loading feedbacks: $err')),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
